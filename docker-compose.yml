@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  invoice-service:
+    image: node:16-alpine
+    container_name: invoice-service
+    restart: unless-stopped
+    working_dir: /app
+    command: npm run start:docker
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis-cache
+      - db
+
+  redis-cache:
+    image: redis:6.2.4-alpine
+    hostname: redis
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bingemate
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  redisdata:
+    driver: local
+  postgres-data:
+    driver: local

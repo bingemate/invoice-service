@@ -14,7 +14,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         const port = configService.get<number>('SMTP_PORT');
         const user = configService.get<string>('SMTP_USER');
         const pass = configService.get<string>('SMTP_PASSWORD');
-        const from = configService.get<string>('SMTP_FROM_NAME');
+        const from = configService.get<string>('SMTP_FROM_EMAIL');
 
         return {
           transport: {

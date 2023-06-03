@@ -9,6 +9,8 @@ import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StripeCustomerModule } from './stripe-customer/stripe-customer.module';
 import { MailModule } from './mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { MailModule } from './mail/mail.module';
         logging: false,
       }),
     }),
+    ScheduleModule.forRoot(),
     SubscriptionModule,
     WebhookModule,
     StripeModule,
@@ -37,6 +40,7 @@ import { MailModule } from './mail/mail.module';
     AppCacheModule,
     StripeCustomerModule,
     MailModule,
+    TaskModule,
   ],
 })
 export class AppModule {}

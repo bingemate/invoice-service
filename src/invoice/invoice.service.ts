@@ -68,4 +68,14 @@ export class InvoiceService {
 
     return new InvoiceDto(invoice);
   }
+
+  async getUsersWithExpiredSubscribe(): Promise<InvoiceDto[]> {
+    const invoices = await this.invoiceRepository
+      .createQueryBuilder()
+      .distinctOn(['InvoiceEntity.userId'])
+      .where('InvoiceEntity.periodEnd < :today', { today: new Date() })
+      .getMany();
+
+    return invoices.map((invoice) => new InvoiceDto(invoice));
+  }
 }
